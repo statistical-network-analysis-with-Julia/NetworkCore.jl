@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">NetworkCore.jl</title>
+  <desc id="desc">Connected vertices: the shared foundation for attributed network data.</desc>
+  <path d="M128 42 44 116 84 206 204 170 128 42M44 116 204 170M84 206 128 42" fill="none" stroke="#4063D8" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="128" cy="42" r="22" fill="#389826"/>
+  <circle cx="44" cy="116" r="22" fill="#CB3C33"/>
+  <circle cx="84" cy="206" r="22" fill="#9558B2"/>
+  <circle cx="204" cy="170" r="22" fill="#4063D8"/>
+</svg>

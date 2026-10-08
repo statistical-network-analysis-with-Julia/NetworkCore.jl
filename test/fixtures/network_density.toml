@@ -1,0 +1,37 @@
+name = "network_density"
+
+[provenance]
+r_version = "4.6.1"
+network_version = "1.20.0"
+sna_version = "2.8"
+seed = 20260909
+script = "test/fixtures/r/network_density.R"
+date = "2026-09-09"
+dataset = "hand-built 4- and 5-vertex networks (see script)"
+
+[tolerance]
+# Deterministic ratio of two integers: agreement to floating-point rounding.
+default = 1e-12
+
+[values]
+# one-mode: edge count / possible dyads, has.loops decides the diagonal
+directed_noloops = 0.25
+undirected_noloops = 0.5
+directed_loops = 0.25
+undirected_loops = 0.29999999999999999
+# two-mode: discount.bipartite=FALSE (R default) counts within-mode dyads
+bipartite_undirected = 0.29999999999999999
+bipartite_undirected_discount = 0.5
+bipartite_directed = 0.14999999999999999
+bipartite_directed_discount = 0.25
+# one NA edge, na.omit=FALSE == Julia missing=:face (face value, full denominator)
+na_face = 0.25
+# diag: network.density keys on has.loops (default == Julia diag=true);
+# sna::gden(diag=FALSE) drops self-loops from numerator and denominator (Julia diag=false)
+directed_loops_diag = 0.3125
+directed_loops_nodiag = 0.33333333333333331
+undirected_loops_diag = 0.20000000000000001
+undirected_loops_nodiag = 0.16666666666666666
+undirected_loops_fixture_nodiag = 0.33333333333333331
+# a single vertex has no dyads
+single_vertex_is_nan = true
