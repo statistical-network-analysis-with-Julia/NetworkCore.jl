@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Creating Networks · NetworkCore.jl</title><meta name="title" content="Creating Networks · NetworkCore.jl"/><meta property="og:title" content="Creating Networks · NetworkCore.jl"/><meta property="twitter:title" content="Creating Networks · NetworkCore.jl"/><meta name="description" content="Documentation for NetworkCore.jl."/><meta property="og:description" content="Documentation for NetworkCore.jl."/><meta property="twitter:description" content="Documentation for NetworkCore.jl."/><meta property="og:url" content="https://statistical-network-analysis-with-Julia.github.io/NetworkCore.jl/dev/guide/construction/"/><meta property="twitter:url" content="https://statistical-network-analysis-with-Julia.github.io/NetworkCore.jl/dev/guide/construction/"/><link rel="canonical" href="https://statistical-network-analysis-with-Julia.github.io/NetworkCore.jl/dev/guide/construction/"/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.63.2/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script><link href="../../assets/favicon.ico" rel="icon" type="image/x-icon"/></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img src="../../assets/logo.svg" alt="NetworkCore.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../../">NetworkCore.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><a class="tocitem" href="../../getting_started/">Getting Started</a></li><li><span class="tocitem">User Guide</span><ul><li class="is-active"><a class="tocitem" href>Creating Networks</a><ul class="internal"><li><a class="tocitem" href="#Network-Constructors"><span>Network Constructors</span></a></li><li><a class="tocitem" href="#Directed-vs.-Undirected-Networks"><span>Directed vs. Undirected Networks</span></a></li><li><a class="tocitem" href="#Adding-and-Removing-Vertices"><span>Adding and Removing Vertices</span></a></li><li><a class="tocitem" href="#Adding-and-Removing-Edges"><span>Adding and Removing Edges</span></a></li><li><a class="tocitem" href="#Bipartite-Networks"><span>Bipartite Networks</span></a></li><li><a class="tocitem" href="#Network-Properties"><span>Network Properties</span></a></li><li><a class="tocitem" href="#Neighborhoods-and-Subgraphs"><span>Neighborhoods and Subgraphs</span></a></li><li><a class="tocitem" href="#Vertex-Permutation"><span>Vertex Permutation</span></a></li><li><a class="tocitem" href="#Display"><span>Display</span></a></li><li><a class="tocitem" href="#Creating-Networks-from-External-Data"><span>Creating Networks from External Data</span></a></li><li><a class="tocitem" href="#Random-Graph-Generation"><span>Random Graph Generation</span></a></li></ul></li><li><a class="tocitem" href="../attributes/">Attributes</a></li><li><a class="tocitem" href="../missing_data/">Missing Data</a></li><li><a class="tocitem" href="../conversion/">Conversion</a></li><li><a class="tocitem" href="../conversion_invariants/">Conversion Invariants</a></li><li><a class="tocitem" href="../io/">I/O</a></li><li><a class="tocitem" href="../datasets/">Datasets</a></li></ul></li><li><span class="tocitem">API Reference</span><ul><li><a class="tocitem" href="../../api/types/">Types</a></li><li><a class="tocitem" href="../../api/graph_interface/">Graph Interface</a></li><li><a class="tocitem" href="../../api/attributes/">Attributes</a></li><li><a class="tocitem" href="../../api/conversion/">Conversion &amp; I/O</a></li><li><a class="tocitem" href="../../api/contracts/">Ecosystem Contracts</a></li><li><a class="tocitem" href="../../api/metadata/">Result Metadata</a></li><li><a class="tocitem" href="../../api/inference/">Shared Inference</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">User Guide</a></li><li class="is-active"><a href>Creating Networks</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Creating Networks</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/Statistical-network-analysis-with-Julia/NetworkCore.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/Statistical-network-analysis-with-Julia/NetworkCore.jl/blob/main/docs/src/guide/construction.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Creating-Networks"><a class="docs-heading-anchor" href="#Creating-Networks">Creating Networks</a><a id="Creating-Networks-1"></a><a class="docs-heading-anchor-permalink" href="#Creating-Networks" title="Permalink"></a></h1><p>This guide covers all aspects of creating, modifying, and inspecting networks in NetworkCore.jl.</p><h2 id="Network-Constructors"><a class="docs-heading-anchor" href="#Network-Constructors">Network Constructors</a><a id="Network-Constructors-1"></a><a class="docs-heading-anchor-permalink" href="#Network-Constructors" title="Permalink"></a></h2><h3 id="Basic-Constructor"><a class="docs-heading-anchor" href="#Basic-Constructor">Basic Constructor</a><a id="Basic-Constructor-1"></a><a class="docs-heading-anchor-permalink" href="#Basic-Constructor" title="Permalink"></a></h3><p>The primary way to create a network is with the <code>network</code> constructor:</p><pre><code class="language-julia hljs">using NetworkCore
+
+# Empty network (no vertices)
+net = network()
+
+# Network with n vertices and no edges
+net = network(10)
+</code></pre><p>With an explicit type parameter, qualify the type with the module name (after <code>using NetworkCore</code> in the REPL, the bare name <code>Network</code> refers to the module, not the type):</p><p>&lt;!– skip-check –&gt;</p><pre><code class="language-julia hljs">net = Network{Int64}(; n=10)</code></pre><h3 id="R-Style-Aliases"><a class="docs-heading-anchor" href="#R-Style-Aliases">R-Style Aliases</a><a id="R-Style-Aliases-1"></a><a class="docs-heading-anchor-permalink" href="#R-Style-Aliases" title="Permalink"></a></h3><p>NetworkCore.jl provides aliases that match R&#39;s <code>network</code> package API:</p><pre><code class="language-julia hljs"># R&#39;s network(10)
+net = network(10)
+
+# R&#39;s network.initialize(10); equivalent to network(10)
+net = network_initialize(10)</code></pre><h3 id="Constructor-Options"><a class="docs-heading-anchor" href="#Constructor-Options">Constructor Options</a><a id="Constructor-Options-1"></a><a class="docs-heading-anchor-permalink" href="#Constructor-Options" title="Permalink"></a></h3><p>All constructors accept keyword arguments controlling network properties:</p><pre><code class="language-julia hljs">net = network(10;
+    directed = true,         # Edge directionality
+    bipartite = nothing,     # Set to Int for two-mode networks
+    loops = false,           # Whether self-loops are allowed
+    multiple = false,        # Whether multi-edges are allowed
+    hyper = false,           # Whether hyperedges are allowed
+)</code></pre><table><tr><th style="text-align: right">Option</th><th style="text-align: right">Type</th><th style="text-align: right">Default</th><th style="text-align: right">Description</th></tr><tr><td style="text-align: right"><code>directed</code></td><td style="text-align: right"><code>Bool</code></td><td style="text-align: right"><code>true</code></td><td style="text-align: right">If true, edges have direction (source to target)</td></tr><tr><td style="text-align: right"><code>bipartite</code></td><td style="text-align: right"><code>Union{Nothing,Int}</code></td><td style="text-align: right"><code>nothing</code></td><td style="text-align: right">Number of mode-1 vertices for bipartite networks</td></tr><tr><td style="text-align: right"><code>loops</code></td><td style="text-align: right"><code>Bool</code></td><td style="text-align: right"><code>false</code></td><td style="text-align: right">Whether vertices can have edges to themselves</td></tr><tr><td style="text-align: right"><code>multiple</code></td><td style="text-align: right"><code>Bool</code></td><td style="text-align: right"><code>false</code></td><td style="text-align: right">Whether parallel edges between the same pair are allowed</td></tr><tr><td style="text-align: right"><code>hyper</code></td><td style="text-align: right"><code>Bool</code></td><td style="text-align: right"><code>false</code></td><td style="text-align: right">Whether edges can connect more than two vertices</td></tr></table><h2 id="Directed-vs.-Undirected-Networks"><a class="docs-heading-anchor" href="#Directed-vs.-Undirected-Networks">Directed vs. Undirected Networks</a><a id="Directed-vs.-Undirected-Networks-1"></a><a class="docs-heading-anchor-permalink" href="#Directed-vs.-Undirected-Networks" title="Permalink"></a></h2><p>The <code>directed</code> flag fundamentally affects how the network behaves:</p><h3 id="Directed-Networks"><a class="docs-heading-anchor" href="#Directed-Networks">Directed Networks</a><a id="Directed-Networks-1"></a><a class="docs-heading-anchor-permalink" href="#Directed-Networks" title="Permalink"></a></h3><p>In directed networks, each edge has a source (sender) and a target (receiver). Edge <code>(1, 2)</code> is distinct from edge <code>(2, 1)</code>:</p><pre><code class="language-julia hljs">net = network(3; directed=true)
+add_edge!(net, 1, 2)
+
+has_edge(net, 1, 2)  # true
+has_edge(net, 2, 1)  # false  -- direction matters
+ne(net)              # 1</code></pre><p>Directed networks are used for asymmetric relationships like email communication, citations, advice seeking, or Twitter follows.</p><h3 id="Undirected-Networks"><a class="docs-heading-anchor" href="#Undirected-Networks">Undirected Networks</a><a id="Undirected-Networks-1"></a><a class="docs-heading-anchor-permalink" href="#Undirected-Networks" title="Permalink"></a></h3><p>In undirected networks, edges are symmetric. Adding edge <code>(1, 2)</code> automatically creates <code>(2, 1)</code>:</p><pre><code class="language-julia hljs">net = network(3; directed=false)
+add_edge!(net, 1, 2)
+
+has_edge(net, 1, 2)  # true
+has_edge(net, 2, 1)  # true  -- both directions present
+ne(net)              # 1     -- counted once, not twice</code></pre><p>Undirected networks are used for symmetric relationships like friendship (in some contexts), co-authorship, physical proximity, or shared membership.</p><h3 id="Implementation-Detail"><a class="docs-heading-anchor" href="#Implementation-Detail">Implementation Detail</a><a id="Implementation-Detail-1"></a><a class="docs-heading-anchor-permalink" href="#Implementation-Detail" title="Permalink"></a></h3><p>Internally, NetworkCore.jl always stores edges in a <code>SimpleDiGraph</code>. For undirected networks, both <code>(i, j)</code> and <code>(j, i)</code> are stored, but <code>ne()</code> divides by 2 and <code>edges()</code> only returns edges where <code>src &lt;= dst</code> to avoid double-counting. Edge attributes use a canonical ordering via <code>minmax(i, j)</code> to ensure consistent lookups regardless of which direction you specify.</p><div class="admonition is-warning" id="Call-Graphs.jl-on-net,-not-on-net.graph-bd59df24ba183c7f"><header class="admonition-header">Call Graphs.jl on `net`, not on `net.graph`<a class="admonition-anchor" href="#Call-Graphs.jl-on-net,-not-on-net.graph-bd59df24ba183c7f" title="Permalink"></a></header><div class="admonition-body"><p>Because of this storage, a Graphs.jl algorithm run on the internal field <code>net.graph</code> of an undirected network sees every tie twice, as two arcs: <code>Graphs.core_number(net.graph)</code> doubles every core number and <code>Graphs.degree(net.graph)</code> every degree. Pass the <code>Network</code> itself (<code>Graphs.core_number(net)</code>), or convert with <code>Graphs.SimpleGraph(net)</code> when you need a concrete undirected Graphs.jl graph. See the <a href="../../api/graph_interface/">Graph Interface</a> page.</p></div></div><h2 id="Adding-and-Removing-Vertices"><a class="docs-heading-anchor" href="#Adding-and-Removing-Vertices">Adding and Removing Vertices</a><a id="Adding-and-Removing-Vertices-1"></a><a class="docs-heading-anchor-permalink" href="#Adding-and-Removing-Vertices" title="Permalink"></a></h2><h3 id="Adding-Vertices"><a class="docs-heading-anchor" href="#Adding-Vertices">Adding Vertices</a><a id="Adding-Vertices-1"></a><a class="docs-heading-anchor-permalink" href="#Adding-Vertices" title="Permalink"></a></h3><pre><code class="language-julia hljs">net = network(3)
+nv(net)  # 3
+
+# Add a single vertex
+add_vertex!(net)
+nv(net)  # 4
+
+# Add multiple vertices
+add_vertices!(net, 5)
+nv(net)  # 9</code></pre><p>New vertices are numbered sequentially starting after the current maximum vertex ID.</p><h3 id="Removing-Vertices"><a class="docs-heading-anchor" href="#Removing-Vertices">Removing Vertices</a><a id="Removing-Vertices-1"></a><a class="docs-heading-anchor-permalink" href="#Removing-Vertices" title="Permalink"></a></h3><pre><code class="language-julia hljs">net = network(5)
+add_edge!(net, 1, 2)
+add_edge!(net, 2, 3)
+
+# Remove vertex 2 (also removes edges incident to vertex 2)
+rem_vertex!(net, 2)
+nv(net)  # 4</code></pre><p>When a vertex is removed:</p><ol><li>All edges incident to that vertex are removed</li><li>All attributes for that vertex are deleted</li><li>Edge attributes for removed edges are deleted</li><li>On a one-mode network the last vertex is renumbered to fill the gap (Graphs.jl&#39;s swap-and-pop convention). On a two-mode network the vertices after the removed one each move down by one instead, and <code>bipartite</code> drops by one when a mode-1 vertex goes — R&#39;s <code>delete.vertices</code> — so the two modes stay contiguous blocks.</li></ol><p>To remove several vertices at once with R&#39;s stable renumbering on any network, use Graphs.jl&#39;s <code>rem_vertices!</code>, which returns the original ID of each remaining vertex:</p><pre><code class="language-julia hljs">using Graphs: rem_vertices!
+net = network(5)
+add_edges!(net, [(1, 2), (2, 5), (4, 5)])
+vmap = rem_vertices!(net, [1, 3])   # [2, 4, 5]
+has_edge(net, 1, 3)                 # true — old edge (2, 5)</code></pre><div class="admonition is-info" id="Vertex-Renumbering-b6155636ecf1b834"><header class="admonition-header">Vertex Renumbering<a class="admonition-anchor" href="#Vertex-Renumbering-b6155636ecf1b834" title="Permalink"></a></header><div class="admonition-body"><p>When removing vertex <code>v</code>, vertex <code>nv(net)</code> is renumbered to <code>v</code> (the Graphs.jl swap-and-pop convention). NetworkCore.jl remaps the renumbered vertex&#39;s attributes and its incident edge attributes automatically, so attribute data stays attached to the right vertices — but any vertex IDs you hold in your own variables still refer to the old numbering.</p></div></div><h2 id="Adding-and-Removing-Edges"><a class="docs-heading-anchor" href="#Adding-and-Removing-Edges">Adding and Removing Edges</a><a id="Adding-and-Removing-Edges-1"></a><a class="docs-heading-anchor-permalink" href="#Adding-and-Removing-Edges" title="Permalink"></a></h2><h3 id="Adding-Single-Edges"><a class="docs-heading-anchor" href="#Adding-Single-Edges">Adding Single Edges</a><a id="Adding-Single-Edges-1"></a><a class="docs-heading-anchor-permalink" href="#Adding-Single-Edges" title="Permalink"></a></h3><pre><code class="language-julia hljs">net = network(5)
+
+# Add an edge (returns true if successful, false if already exists)
+add_edge!(net, 1, 2)   # true
+add_edge!(net, 1, 2)   # false -- edge already exists
+
+# Add an edge with attributes
+add_edge!(net, 2, 3, Dict(:weight =&gt; 1.5, :type =&gt; :friendship))</code></pre><h3 id="Self-Loops"><a class="docs-heading-anchor" href="#Self-Loops">Self-Loops</a><a id="Self-Loops-1"></a><a class="docs-heading-anchor-permalink" href="#Self-Loops" title="Permalink"></a></h3><p>By default, self-loops are not allowed:</p><pre><code class="language-julia hljs">net = network(5; loops=false)
+add_edge!(net, 1, 1)   # false -- self-loop rejected
+
+net = network(5; loops=true)
+add_edge!(net, 1, 1)   # true -- self-loop allowed</code></pre><h3 id="Adding-Multiple-Edges"><a class="docs-heading-anchor" href="#Adding-Multiple-Edges">Adding Multiple Edges</a><a id="Adding-Multiple-Edges-1"></a><a class="docs-heading-anchor-permalink" href="#Adding-Multiple-Edges" title="Permalink"></a></h3><pre><code class="language-julia hljs">net = network(5)
+
+# From a list of tuples
+edges_to_add = [(1, 2), (2, 3), (3, 4), (4, 5), (5, 1)]
+n_added = add_edges!(net, edges_to_add)  # returns 5</code></pre><h3 id="Removing-Edges"><a class="docs-heading-anchor" href="#Removing-Edges">Removing Edges</a><a id="Removing-Edges-1"></a><a class="docs-heading-anchor-permalink" href="#Removing-Edges" title="Permalink"></a></h3><pre><code class="language-julia hljs"># Remove a single edge
+rem_edge!(net, 1, 2)   # true if removed, false if not found
+
+# For undirected networks, rem_edge! removes both directions
+net = network(3; directed=false)
+add_edge!(net, 1, 2)
+rem_edge!(net, 1, 2)
+has_edge(net, 2, 1)     # false -- both directions removed</code></pre><p>When an edge is removed, all its attributes are also deleted.</p><h2 id="Bipartite-Networks"><a class="docs-heading-anchor" href="#Bipartite-Networks">Bipartite Networks</a><a id="Bipartite-Networks-1"></a><a class="docs-heading-anchor-permalink" href="#Bipartite-Networks" title="Permalink"></a></h2><p>Bipartite (two-mode) networks have two distinct vertex sets where edges only connect vertices from different sets.</p><h3 id="Creating-Bipartite-Networks"><a class="docs-heading-anchor" href="#Creating-Bipartite-Networks">Creating Bipartite Networks</a><a id="Creating-Bipartite-Networks-1"></a><a class="docs-heading-anchor-permalink" href="#Creating-Bipartite-Networks" title="Permalink"></a></h3><pre><code class="language-julia hljs"># 4 actors x 3 events
+bnet = BipartiteNetwork(4, 3)
+
+# Vertices 1-4 are mode 1 (actors)
+# Vertices 5-7 are mode 2 (events)
+bnet.n_mode1  # 4
+bnet.n_mode2  # 3
+nv(bnet)      # 7</code></pre><h3 id="Adding-Edges"><a class="docs-heading-anchor" href="#Adding-Edges">Adding Edges</a><a id="Adding-Edges-1"></a><a class="docs-heading-anchor-permalink" href="#Adding-Edges" title="Permalink"></a></h3><p>Edges should connect vertices from different modes:</p><pre><code class="language-julia hljs">add_edge!(bnet, 1, 5)   # Actor 1 -- Event 5
+add_edge!(bnet, 1, 6)   # Actor 1 -- Event 6
+add_edge!(bnet, 2, 5)   # Actor 2 -- Event 5
+add_edge!(bnet, 3, 7)   # Actor 3 -- Event 7
+add_edge!(bnet, 4, 6)   # Actor 4 -- Event 6
+add_edge!(bnet, 4, 7)   # Actor 4 -- Event 7</code></pre><h3 id="Checking-Bipartiteness"><a class="docs-heading-anchor" href="#Checking-Bipartiteness">Checking Bipartiteness</a><a id="Checking-Bipartiteness-1"></a><a class="docs-heading-anchor-permalink" href="#Checking-Bipartiteness" title="Permalink"></a></h3><p>Two related but distinct notions are exposed:</p><ul><li><code>Graphs.is_bipartite(net)</code> computes the <strong>graph-theoretic</strong> property: can the vertices be two-colored so that every edge joins the two color classes? (An edgeless graph is trivially bipartite.)</li><li><code>is_two_mode(net)</code> reports the <strong>two-mode metadata flag</strong>: was the network declared bipartite via <code>network(n; bipartite=k)</code> or built as a <code>BipartiteNetwork</code>?</li></ul><pre><code class="language-julia hljs">using Graphs: is_bipartite
+
+is_bipartite(bnet)  # true  -- only cross-mode edges are admitted
+is_two_mode(bnet)   # true  -- carries mode metadata
+
+# A one-mode network can still be bipartite as a graph...
+net = network(4; directed=false)
+add_edge!(net, 1, 2)
+add_edge!(net, 2, 3)
+is_bipartite(net)   # true  -- a path is two-colorable
+is_two_mode(net)    # false -- no mode metadata
+
+# ...and stops being bipartite once it contains an odd cycle
+add_edge!(net, 1, 3)
+is_bipartite(net)   # false
+
+# Marking a Network as two-mode via the constructor sets the metadata flag
+net = network(7; bipartite=4)  # 4 vertices in mode 1
+is_two_mode(net)    # true</code></pre><h3 id="BipartiteNetwork-Properties"><a class="docs-heading-anchor" href="#BipartiteNetwork-Properties">BipartiteNetwork Properties</a><a id="BipartiteNetwork-Properties-1"></a><a class="docs-heading-anchor-permalink" href="#BipartiteNetwork-Properties" title="Permalink"></a></h3><pre><code class="language-julia hljs">bnet = BipartiteNetwork(4, 3)
+println(bnet)      # BipartiteNetwork{Int64}(4+3 vertices, 0 edges)
+bnet.n_mode1       # 4
+bnet.n_mode2       # 3
+display(bnet)
+# BipartiteNetwork{Int64}: directed two-mode network
+#   Vertices: 7
+#   Edges: 0
+#   Directed: true
+#   Loops: false
+#   Two-mode: 4 mode-1 vertices (1:4), 3 mode-2 vertices (5:7)</code></pre><h2 id="Network-Properties"><a class="docs-heading-anchor" href="#Network-Properties">Network Properties</a><a id="Network-Properties-1"></a><a class="docs-heading-anchor-permalink" href="#Network-Properties" title="Permalink"></a></h2><h3 id="Size-and-Density"><a class="docs-heading-anchor" href="#Size-and-Density">Size and Density</a><a id="Size-and-Density-1"></a><a class="docs-heading-anchor-permalink" href="#Size-and-Density" title="Permalink"></a></h3><pre><code class="language-julia hljs">net = network(10)
+add_edges!(net, [(1,2), (2,3), (3,4), (4,5), (1,5)])
+
+nv(net)                 # 10 -- number of vertices
+ne(net)                 # 5  -- number of edges
+network_size(net)       # 10 -- alias for nv()
+network_edgecount(net)  # 5  -- alias for ne()
+network_density(net)    # 0.0556 -- 5 / (10*9) for directed</code></pre><h3 id="Density-Calculation"><a class="docs-heading-anchor" href="#Density-Calculation">Density Calculation</a><a id="Density-Calculation-1"></a><a class="docs-heading-anchor-permalink" href="#Density-Calculation" title="Permalink"></a></h3><p><code>network_density</code> follows R&#39;s <code>network.density</code>: the edge count <code>m</code> over the number of dyads that could carry a tie. The denominator depends on the network type and on two keywords:</p><table><tr><th style="text-align: right">Network Type</th><th style="text-align: right">Formula</th><th style="text-align: right">Maximum Edges</th></tr><tr><td style="text-align: right">Directed, no loops</td><td style="text-align: right"><code>m / (n * (n-1))</code></td><td style="text-align: right"><code>n * (n-1)</code></td></tr><tr><td style="text-align: right">Directed, with loops</td><td style="text-align: right"><code>m / (n * n)</code></td><td style="text-align: right"><code>n^2</code></td></tr><tr><td style="text-align: right">Undirected, no loops</td><td style="text-align: right"><code>m / (n * (n-1) / 2)</code></td><td style="text-align: right"><code>n * (n-1) / 2</code></td></tr><tr><td style="text-align: right">Undirected, with loops</td><td style="text-align: right"><code>m / (n * (n+1) / 2)</code></td><td style="text-align: right"><code>n * (n+1) / 2</code></td></tr><tr><td style="text-align: right">Two-mode (<code>bipartite=n₁</code>), default</td><td style="text-align: right">as the one-mode row above</td><td style="text-align: right">all <code>n (n-1)</code> (or <code>/ 2</code>) dyads, within-mode ones included — R&#39;s <code>discount.bipartite=FALSE</code></td></tr><tr><td style="text-align: right">Two-mode, undirected, <code>discount_bipartite=true</code></td><td style="text-align: right"><code>m / (n₁ * n₂)</code></td><td style="text-align: right"><code>n₁ * n₂</code> cross-mode dyads</td></tr><tr><td style="text-align: right">Two-mode, directed, <code>discount_bipartite=true</code></td><td style="text-align: right"><code>m / (2 * n₁ * n₂)</code></td><td style="text-align: right"><code>2 * n₁ * n₂</code> — one per direction</td></tr></table><ul><li><strong><code>diag</code></strong> decides whether the diagonal (self-loops) is part of the dyad count. It defaults to the network&#39;s <code>loops</code> flag, exactly as R keys on <code>has.loops(x)</code>, so the &quot;with loops&quot; rows apply only to networks built with <code>loops=true</code>. <code>diag=false</code> on such a network mirrors <code>sna::gden(diag=FALSE)</code>: self-loops are dropped from both <code>m</code> and the denominator.</li><li><strong><code>discount_bipartite</code></strong> is a no-op on a one-mode network. The <code>BipartiteNetwork</code> wrapper and a <code>network(n; bipartite=n₁)</code> give the same answer for the same edge set.</li><li>A network with <strong>masked (unobserved) dyads is refused</strong> by default; pass <code>missing=:face</code> to count edges at their stored face value (R&#39;s <code>na.omit=FALSE</code>). See <a href="../missing_data/">Missing Data</a>.</li></ul><pre><code class="language-julia hljs">b = network(5; bipartite=2, directed=false)
+add_edges!(b, [(1,3), (1,4), (2,5)])
+network_density(b)                            # 0.3  -- 3 / 10, R&#39;s default
+network_density(b; discount_bipartite=true)   # 0.5  -- 3 / (2*3)
+
+l = network(3; loops=true)
+add_edges!(l, [(1,1), (1,2)])
+network_density(l)                            # 0.2222 -- 2 / 9
+network_density(l; diag=false)                # 0.1667 -- 1 / 6, self-loop dropped</code></pre><h3 id="Directedness"><a class="docs-heading-anchor" href="#Directedness">Directedness</a><a id="Directedness-1"></a><a class="docs-heading-anchor-permalink" href="#Directedness" title="Permalink"></a></h3><pre><code class="language-julia hljs">is_directed(net)    # true or false (a compile-time property of Network{T,D})
+is_bipartite(net)   # graph-theoretic two-colorability
+is_two_mode(net)    # two-mode metadata flag</code></pre><h3 id="Vertex-and-Edge-Iteration"><a class="docs-heading-anchor" href="#Vertex-and-Edge-Iteration">Vertex and Edge Iteration</a><a id="Vertex-and-Edge-Iteration-1"></a><a class="docs-heading-anchor-permalink" href="#Vertex-and-Edge-Iteration" title="Permalink"></a></h3><pre><code class="language-julia hljs"># Iterate vertices
+for v in vertices(net)
+    println(&quot;Vertex: &quot;, v)
+end
+
+# Iterate edges (src/dst are Graphs.jl accessors)
+using Graphs: src, dst
+for e in edges(net)
+    println(src(e), &quot; → &quot;, dst(e))
+end
+
+# Existence checks
+has_vertex(net, 3)    # true if vertex 3 exists
+has_edge(net, 1, 2)   # true if edge (1,2) exists</code></pre><h2 id="Neighborhoods-and-Subgraphs"><a class="docs-heading-anchor" href="#Neighborhoods-and-Subgraphs">Neighborhoods and Subgraphs</a><a id="Neighborhoods-and-Subgraphs-1"></a><a class="docs-heading-anchor-permalink" href="#Neighborhoods-and-Subgraphs" title="Permalink"></a></h2><h3 id="Neighborhoods"><a class="docs-heading-anchor" href="#Neighborhoods">Neighborhoods</a><a id="Neighborhoods-1"></a><a class="docs-heading-anchor-permalink" href="#Neighborhoods" title="Permalink"></a></h3><p>Find all vertices within a given distance of a focal vertex:</p><pre><code class="language-julia hljs">net = network(6; directed=false)
+add_edges!(net, [(1,2), (2,3), (3,4), (4,5), (5,6)])
+
+# Direct neighbors of vertex 1 (order=1, default)
+nbhood1 = get_neighborhood(net, 1)
+# Set{Int64} with 2 elements: {1, 2}
+
+# 2-neighborhood (distance &lt;= 2)
+nbhood2 = get_neighborhood(net, 1, 2)
+# Set{Int64} with 3 elements: {1, 2, 3}
+
+# 3-neighborhood
+nbhood3 = get_neighborhood(net, 1, 3)
+# Set{Int64} with 4 elements: {1, 2, 3, 4}</code></pre><p>The returned set always includes the focal vertex itself.</p><h3 id="Induced-Subgraphs"><a class="docs-heading-anchor" href="#Induced-Subgraphs">Induced Subgraphs</a><a id="Induced-Subgraphs-1"></a><a class="docs-heading-anchor-permalink" href="#Induced-Subgraphs" title="Permalink"></a></h3><p>Extract a subnetwork containing only specified vertices and edges between them:</p><pre><code class="language-julia hljs">net = network(6)
+add_edges!(net, [(1,2), (1,3), (2,3), (3,4), (4,5), (5,6)])
+set_vertex_attribute!(net, :name,
+    Dict(1=&gt;&quot;A&quot;, 2=&gt;&quot;B&quot;, 3=&gt;&quot;C&quot;, 4=&gt;&quot;D&quot;, 5=&gt;&quot;E&quot;, 6=&gt;&quot;F&quot;))
+set_edge_attribute!(net, :weight,
+    Dict((1,2)=&gt;1.0, (1,3)=&gt;2.0, (2,3)=&gt;1.5, (3,4)=&gt;3.0, (4,5)=&gt;2.0, (5,6)=&gt;1.0))
+
+# Extract subgraph with vertices {1, 2, 3}
+sub = get_induced_subgraph(net, [1, 2, 3])
+nv(sub)  # 3
+ne(sub)  # 3 (edges 1→2, 1→3, 2→3)
+
+# Vertex and edge attributes are preserved (with remapped IDs)
+get_vertex_attribute(sub, :name)  # Dict(1=&gt;&quot;A&quot;, 2=&gt;&quot;B&quot;, 3=&gt;&quot;C&quot;)</code></pre><p>Note that vertex IDs are remapped to <code>1:length(vlist)</code> in the subgraph, in the order of <code>vlist</code> (R&#39;s <code>get.inducedSubgraph</code> keeps the original order instead; pass <code>sort(vlist)</code> to match it). Attributes are carried over with the new IDs. On a two-mode network the subgraph is two-mode as well, provided the selected mode-1 vertices come first in <code>vlist</code>; an interleaved selection is an <code>ArgumentError</code>.</p><p>Graphs.jl&#39;s own <code>induced_subgraph(net, vlist)</code> returns the same <code>Network</code> together with the vertex map, and <code>complement(net)</code> the network of non-ties (self-loops only when <code>loops=true</code>, cross-mode dyads only on a two-mode network):</p><pre><code class="language-julia hljs">using Graphs: induced_subgraph, complement
+sub, vmap = induced_subgraph(net, [1, 2, 3])
+ne(complement(sub))   # 3 — the 6 ordered pairs minus the 3 arcs</code></pre><h2 id="Vertex-Permutation"><a class="docs-heading-anchor" href="#Vertex-Permutation">Vertex Permutation</a><a id="Vertex-Permutation-1"></a><a class="docs-heading-anchor-permalink" href="#Vertex-Permutation" title="Permalink"></a></h2><p>Reorder vertex IDs according to a permutation:</p><pre><code class="language-julia hljs">net = network(4)
+add_edges!(net, [(1,2), (2,3), (3,4)])
+set_vertex_attribute!(net, :name, Dict(1=&gt;&quot;A&quot;, 2=&gt;&quot;B&quot;, 3=&gt;&quot;C&quot;, 4=&gt;&quot;D&quot;))
+
+# Reverse the vertex order
+perm = [4, 3, 2, 1]
+net_perm = permute_vertices(net, perm)
+
+# Vertex 1 in the new network was vertex 4 in the old
+get_vertex_attribute(net_perm, :name, 1)  # &quot;D&quot;
+get_vertex_attribute(net_perm, :name, 4)  # &quot;A&quot;</code></pre><p>The permutation vector <code>perm</code> specifies which old vertex occupies each new position: <code>perm[new_id] = old_id</code>.</p><h2 id="Display"><a class="docs-heading-anchor" href="#Display">Display</a><a id="Display-1"></a><a class="docs-heading-anchor-permalink" href="#Display" title="Permalink"></a></h2><p>A network has two displays, as R&#39;s <code>network</code> has <code>print</code> and its one-line summary. At the REPL (or under <code>display</code>) it prints the block R users expect from <code>print.network</code> — including <code>Directed:</code>, <code>Loops:</code> and, for a two-mode network, the mode sizes, the three things most often mistaken — with attribute names sorted:</p><pre><code class="language-julia hljs">net = network(5)
+add_edges!(net, [(1,2), (2,3)])
+set_vertex_attribute!(net, :name, Dict(1=&gt;&quot;Alice&quot;, 2=&gt;&quot;Bob&quot;))
+set_edge_attribute!(net, :weight, Dict((1,2) =&gt; 1.5))
+set_network_attribute!(net, :title, &quot;Test&quot;)
+
+display(net)
+# Network{Int64}: directed network
+#   Vertices: 5
+#   Edges: 2
+#   Directed: true
+#   Loops: false
+#   Vertex attributes: name
+#   Edge attributes: weight
+#   Network attributes: title</code></pre><p>Inside a container — a <code>Vector</code> of panel waves, a <code>Dict</code>, the <code>NamedTuple</code> that <code>load_dataset(:s50)</code> returns — and from <code>println</code>/<code>string</code>, it is one line, so a panel of three networks reads as three lines rather than a wall:</p><pre><code class="language-julia hljs">println(net)                       # Network{Int64,true}(5 vertices, 2 edges)
+println(network(3; loops=true))    # Network{Int64,true}(3 vertices, 0 edges, loops)
+println(network(6; bipartite=2))   # Network{Int64,true}(6 vertices, 0 edges, two-mode 2+4)
+s50 = load_dataset(:s50)
+s50.friendship                     # 3-element Vector{Network{Int64, true}}: one line per wave</code></pre><h2 id="Creating-Networks-from-External-Data"><a class="docs-heading-anchor" href="#Creating-Networks-from-External-Data">Creating Networks from External Data</a><a id="Creating-Networks-from-External-Data-1"></a><a class="docs-heading-anchor-permalink" href="#Creating-Networks-from-External-Data" title="Permalink"></a></h2><p>Networks can also be created from matrices, edge lists, DataFrames, and files. See:</p><ul><li><a href="../conversion/">Conversion</a> for <code>network_from_matrix</code>, <code>network_from_edgelist</code>, and <code>network_from_dataframe</code></li><li><a href="../io/">I/O</a> for <code>read_pajek</code> and other file formats</li></ul><h2 id="Random-Graph-Generation"><a class="docs-heading-anchor" href="#Random-Graph-Generation">Random Graph Generation</a><a id="Random-Graph-Generation-1"></a><a class="docs-heading-anchor-permalink" href="#Random-Graph-Generation" title="Permalink"></a></h2><p>For random graph generation, use the companion <a href="https://github.com/statistical-network-analysis-with-Julia/SNA.jl">SNA.jl</a> package which provides <code>rgraph</code>, <code>rgnm</code>, and <code>rgnp</code> functions:</p><pre><code class="language-julia hljs">using SNA
+
+# Erdos-Renyi G(n,p) random graph
+net = rgnp(100, 0.05)
+
+# G(n,m) random graph with exactly m edges
+net = rgnm(100, 200)</code></pre><p>Or use Graphs.jl&#39;s random graph generators and convert:</p><pre><code class="language-julia hljs">using Graphs
+
+g = erdos_renyi(100, 0.05)
+# Use g directly -- NetworkCore.jl is compatible via AbstractGraph</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../getting_started/">« Getting Started</a><a class="docs-footer-nextpage" href="../attributes/">Attributes »</a><div class="flexbox-break"></div><p class="footer-message"><a href="/">Ecosystem home</a> · <a href="/packages/">Packages</a> · <a href="/getting-started/">Get started</a> · <a href="/capabilities/">Capabilities</a> — Built with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.19.0 on <span class="colophon-date" title="Thursday 8 October 2026 06:58">Thursday 8 October 2026</span>. Using Julia version 1.13.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

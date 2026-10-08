@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Conversion · NetworkCore.jl</title><meta name="title" content="Conversion · NetworkCore.jl"/><meta property="og:title" content="Conversion · NetworkCore.jl"/><meta property="twitter:title" content="Conversion · NetworkCore.jl"/><meta name="description" content="Documentation for NetworkCore.jl."/><meta property="og:description" content="Documentation for NetworkCore.jl."/><meta property="twitter:description" content="Documentation for NetworkCore.jl."/><meta property="og:url" content="https://statistical-network-analysis-with-Julia.github.io/NetworkCore.jl/dev/guide/conversion/"/><meta property="twitter:url" content="https://statistical-network-analysis-with-Julia.github.io/NetworkCore.jl/dev/guide/conversion/"/><link rel="canonical" href="https://statistical-network-analysis-with-Julia.github.io/NetworkCore.jl/dev/guide/conversion/"/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.63.2/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script><link href="../../assets/favicon.ico" rel="icon" type="image/x-icon"/></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img src="../../assets/logo.svg" alt="NetworkCore.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../../">NetworkCore.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><a class="tocitem" href="../../getting_started/">Getting Started</a></li><li><span class="tocitem">User Guide</span><ul><li><a class="tocitem" href="../construction/">Creating Networks</a></li><li><a class="tocitem" href="../attributes/">Attributes</a></li><li><a class="tocitem" href="../missing_data/">Missing Data</a></li><li class="is-active"><a class="tocitem" href>Conversion</a><ul class="internal"><li><a class="tocitem" href="#Network-to-Matrix"><span>Network to Matrix</span></a></li><li><a class="tocitem" href="#Network-to-Edge-List"><span>Network to Edge List</span></a></li><li><a class="tocitem" href="#Network-to-DataFrame"><span>Network to DataFrame</span></a></li><li><a class="tocitem" href="#Matrix-to-Network"><span>Matrix to Network</span></a></li><li><a class="tocitem" href="#Edge-List-to-Network"><span>Edge List to Network</span></a></li><li><a class="tocitem" href="#DataFrame-to-Network"><span>DataFrame to Network</span></a></li><li><a class="tocitem" href="#Round-Trip-Conversions"><span>Round-Trip Conversions</span></a></li><li><a class="tocitem" href="#Working-with-Graphs.jl"><span>Working with Graphs.jl</span></a></li><li><a class="tocitem" href="#Sparse-Matrix-Integration"><span>Sparse Matrix Integration</span></a></li><li><a class="tocitem" href="#Best-Practices"><span>Best Practices</span></a></li></ul></li><li><a class="tocitem" href="../conversion_invariants/">Conversion Invariants</a></li><li><a class="tocitem" href="../io/">I/O</a></li><li><a class="tocitem" href="../datasets/">Datasets</a></li></ul></li><li><span class="tocitem">API Reference</span><ul><li><a class="tocitem" href="../../api/types/">Types</a></li><li><a class="tocitem" href="../../api/graph_interface/">Graph Interface</a></li><li><a class="tocitem" href="../../api/attributes/">Attributes</a></li><li><a class="tocitem" href="../../api/conversion/">Conversion &amp; I/O</a></li><li><a class="tocitem" href="../../api/contracts/">Ecosystem Contracts</a></li><li><a class="tocitem" href="../../api/metadata/">Result Metadata</a></li><li><a class="tocitem" href="../../api/inference/">Shared Inference</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">User Guide</a></li><li class="is-active"><a href>Conversion</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Conversion</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/Statistical-network-analysis-with-Julia/NetworkCore.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/Statistical-network-analysis-with-Julia/NetworkCore.jl/blob/main/docs/src/guide/conversion.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Conversion"><a class="docs-heading-anchor" href="#Conversion">Conversion</a><a id="Conversion-1"></a><a class="docs-heading-anchor-permalink" href="#Conversion" title="Permalink"></a></h1><p>NetworkCore.jl provides functions to convert networks to and from adjacency matrices, edge lists, and DataFrames. These conversions mirror R&#39;s <code>as.matrix.network</code>, <code>as.edgelist</code>, and related functions from the <code>network</code> package.</p><h2 id="Network-to-Matrix"><a class="docs-heading-anchor" href="#Network-to-Matrix">Network to Matrix</a><a id="Network-to-Matrix-1"></a><a class="docs-heading-anchor-permalink" href="#Network-to-Matrix" title="Permalink"></a></h2><h3 id="Binary-Adjacency-Matrix"><a class="docs-heading-anchor" href="#Binary-Adjacency-Matrix">Binary Adjacency Matrix</a><a id="Binary-Adjacency-Matrix-1"></a><a class="docs-heading-anchor-permalink" href="#Binary-Adjacency-Matrix" title="Permalink"></a></h3><p>Convert a network to its adjacency matrix representation where 1 indicates an edge and 0 indicates no edge:</p><pre><code class="language-julia hljs">using NetworkCore
+
+net = network(4)
+add_edges!(net, [(1,2), (2,3), (3,4), (4,1)])
+
+A = as_matrix(net)
+# 4x4 Matrix{Float64}:
+#  0.0  1.0  0.0  0.0
+#  0.0  0.0  1.0  0.0
+#  0.0  0.0  0.0  1.0
+#  1.0  0.0  0.0  0.0</code></pre><p>For undirected networks, the matrix is symmetric:</p><pre><code class="language-julia hljs">net = network(4; directed=false)
+add_edges!(net, [(1,2), (2,3), (3,4)])
+
+A = as_matrix(net)
+# 4x4 Matrix{Float64}:
+#  0.0  1.0  0.0  0.0
+#  1.0  0.0  1.0  0.0
+#  0.0  1.0  0.0  1.0
+#  0.0  0.0  1.0  0.0</code></pre><h3 id="Weighted-Adjacency-Matrix"><a class="docs-heading-anchor" href="#Weighted-Adjacency-Matrix">Weighted Adjacency Matrix</a><a id="Weighted-Adjacency-Matrix-1"></a><a class="docs-heading-anchor-permalink" href="#Weighted-Adjacency-Matrix" title="Permalink"></a></h3><p>Use an edge attribute as cell values:</p><pre><code class="language-julia hljs">net = network(4)
+add_edges!(net, [(1,2), (2,3), (3,4), (4,1)])
+set_edge_attribute!(net, :weight,
+    Dict((1,2) =&gt; 1.0, (2,3) =&gt; 2.5, (3,4) =&gt; 0.8, (4,1) =&gt; 1.2))
+
+W = as_matrix(net; attr=:weight)
+# 4x4 Matrix{Float64}:
+#  0.0  1.0  0.0  0.0
+#  0.0  0.0  2.5  0.0
+#  0.0  0.0  0.0  0.8
+#  1.2  0.0  0.0  0.0</code></pre><p>Edges without the specified attribute are treated as 0.0.</p><h3 id="Sparse-Adjacency-Matrix"><a class="docs-heading-anchor" href="#Sparse-Adjacency-Matrix">Sparse Adjacency Matrix</a><a id="Sparse-Adjacency-Matrix-1"></a><a class="docs-heading-anchor-permalink" href="#Sparse-Adjacency-Matrix" title="Permalink"></a></h3><p>For large networks, use sparse matrices to save memory:</p><pre><code class="language-julia hljs">S = as_matrix(net; sparse=true)
+# 4x4 SparseMatrixCSC{Float64, Int64} with 4 stored entries:
+#  ...
+
+# Sparse weighted matrix
+S = as_matrix(net; attr=:weight, sparse=true)</code></pre><p>Sparse matrices are recommended for networks with more than a few hundred vertices, especially when the network is sparse (low density).</p><h3 id="Alias:-as*adjacency*matrix"><a class="docs-heading-anchor" href="#Alias:-as*adjacency*matrix">Alias: as<em>adjacency</em>matrix</a><a id="Alias:-as*adjacency*matrix-1"></a><a class="docs-heading-anchor-permalink" href="#Alias:-as*adjacency*matrix" title="Permalink"></a></h3><p><code>as_adjacency_matrix</code> is an alias for <code>as_matrix</code>, matching R&#39;s <code>as.matrix.network</code> with <code>matrix.type=&quot;adjacency&quot;</code>:</p><pre><code class="language-julia hljs">A = as_adjacency_matrix(net)  # equivalent to as_matrix(net)</code></pre><h3 id="Two-Mode-Networks"><a class="docs-heading-anchor" href="#Two-Mode-Networks">Two-Mode Networks</a><a id="Two-Mode-Networks-1"></a><a class="docs-heading-anchor-permalink" href="#Two-Mode-Networks" title="Permalink"></a></h3><p>A two-mode network — <code>network(n; bipartite=n₁)</code> or a <code>BipartiteNetwork</code> — converts by default to its <code>n₁ × n₂</code> <strong>incidence matrix</strong> (rows are the mode-1 vertices, columns the mode-2 vertices), as R&#39;s <code>as.matrix.network</code> does for a bipartite network. Pass <code>expand_bipartite=true</code> (R&#39;s <code>expand.bipartite=</code>) for the full <code>(n₁ + n₂)</code>-square <strong>adjacency matrix</strong>, which is the shape every one-mode matrix routine expects (eigenvector centrality, structural equivalence, QAP, ...). The incidence block sits at <code>A[1:n₁, n₁+1:end]</code>, is mirrored into the lower block for an undirected network, and the square matrix round-trips through <code>network_from_matrix</code>. <code>attr=</code>, <code>sparse=</code>, <code>missing_value=</code> and <code>return_mask=</code> apply to either shape.</p><pre><code class="language-julia hljs">b = network(5; bipartite=2, directed=false)
+add_edges!(b, [(1,3), (1,4), (2,5)])
+
+B = as_matrix(b)                           # 2×3 incidence matrix
+A = as_matrix(b; expand_bipartite=true)    # 5×5 adjacency matrix
+A[1:2, 3:5] == B                           # true
+A == A&#39;                                    # true — undirected
+ne(network_from_matrix(A; directed=false)) # 3</code></pre><p><strong>Directed two-mode networks.</strong> The incidence matrix has a cell for the arc <code>i → k + j</code> only: <code>B[i, j]</code> is a tie <em>from</em> mode-1 vertex <code>i</code> <em>to</em> mode-2 vertex <code>k + j</code>. An arc from mode 2 to mode 1 (<code>add_edge!(d, 4, 2)</code> below), or a mask on such a dyad, has nowhere to go. R&#39;s <code>as.matrix.network</code> drops it silently; NetworkCore.jl drops it too — never writes it into the mirror cell as if it pointed the other way — and emits a warning naming how many arcs and masked dyads were dropped. <code>expand_bipartite=true</code> is the lossless shape.</p><pre><code class="language-julia hljs">d = network(5; bipartite=2, directed=true)
+add_edges!(d, [(1, 3), (4, 2)])
+
+B = as_matrix(d)                           # warns: dropped 1 arc(s) from mode 2 to mode 1
+B[1, 1]                                    # 1.0 — the arc 1→3
+sum(B)                                     # 1.0 — 4→2 has no cell
+A = as_matrix(d; expand_bipartite=true)    # no warning: 5×5 keeps both arcs
+A[4, 2]                                    # 1.0</code></pre><h3 id="Validation"><a class="docs-heading-anchor" href="#Validation">Validation</a><a id="Validation-1"></a><a class="docs-heading-anchor-permalink" href="#Validation" title="Permalink"></a></h3><p><code>attr=</code> must name an edge attribute the network has. A mistyped name used to return an all-zero matrix (not even the binary adjacency) with no diagnostic, which then fed silently into QAP, <code>netlm</code> or an eigenvector centrality; it now throws an <code>ArgumentError</code> listing the attributes that exist, as R&#39;s <code>as.sociomatrix</code> warns &quot;There is no edge attribute named …&quot;. The same check applies to <code>as_edgelist(net; attrs=)</code>. An edge that exists but carries no value for the attribute contributes <code>0</code> (<code>missing</code> in the edge list).</p><pre><code class="language-julia hljs">net = network(3)
+add_edges!(net, [(1, 2), (2, 3)])
+set_edge_attribute!(net, :weight, 1, 2, 2.5)
+
+as_matrix(net; attr=:weight)[1, 2]         # 2.5
+as_matrix(net; attr=:weight)[2, 3]         # 0.0 — edge without a value
+try
+    as_matrix(net; attr=:wt)               # ArgumentError: no edge attribute :wt; existing: [:weight]
+catch e
+    println(e.msg)
+end</code></pre><h3 id="Function-Signature"><a class="docs-heading-anchor" href="#Function-Signature">Function Signature</a><a id="Function-Signature-1"></a><a class="docs-heading-anchor-permalink" href="#Function-Signature" title="Permalink"></a></h3><p>&lt;!– skip-check –&gt;</p><pre><code class="language-julia hljs">as_matrix(net::Network;
+    attr::Union{Symbol,Nothing} = nothing,  # Edge attribute for values (nothing=binary)
+    sparse::Bool = false,                    # Return SparseMatrixCSC if true
+    missing_value = nothing,                 # Value written at masked dyads (nothing = face value)
+    return_mask::Bool = false,               # Also return the BitMatrix of masked dyads
+    expand_bipartite::Bool = false           # Two-mode: (n₁+n₂)-square adjacency instead of incidence
+) -&gt; Matrix{Float64} or SparseMatrixCSC{Float64}</code></pre><h2 id="Network-to-Edge-List"><a class="docs-heading-anchor" href="#Network-to-Edge-List">Network to Edge List</a><a id="Network-to-Edge-List-1"></a><a class="docs-heading-anchor-permalink" href="#Network-to-Edge-List" title="Permalink"></a></h2><h3 id="Basic-Edge-List"><a class="docs-heading-anchor" href="#Basic-Edge-List">Basic Edge List</a><a id="Basic-Edge-List-1"></a><a class="docs-heading-anchor-permalink" href="#Basic-Edge-List" title="Permalink"></a></h3><p>Convert a network to an <code>n_edges x 2</code> matrix of source-target pairs:</p><pre><code class="language-julia hljs">net = network(4)
+add_edges!(net, [(1,2), (2,3), (3,4), (4,1)])
+
+el = as_edgelist(net)
+# 4x2 Matrix{Int64}:
+#  1  2
+#  2  3
+#  3  4
+#  4  1</code></pre><h3 id="Edge-List-with-Attributes"><a class="docs-heading-anchor" href="#Edge-List-with-Attributes">Edge List with Attributes</a><a id="Edge-List-with-Attributes-1"></a><a class="docs-heading-anchor-permalink" href="#Edge-List-with-Attributes" title="Permalink"></a></h3><p>Request edge attribute values alongside the edge list:</p><pre><code class="language-julia hljs">set_edge_attribute!(net, :weight,
+    Dict((1,2) =&gt; 1.0, (2,3) =&gt; 2.5, (3,4) =&gt; 0.8, (4,1) =&gt; 1.2))
+set_edge_attribute!(net, :type,
+    Dict((1,2) =&gt; :friend, (2,3) =&gt; :colleague, (3,4) =&gt; :friend, (4,1) =&gt; :colleague))
+
+el, attrs = as_edgelist(net; attrs=[:weight, :type])
+
+# el is the edge list matrix
+# attrs is a Dict mapping attribute names to vectors
+# attrs[:weight] == [1.0, 2.5, 0.8, 1.2]
+# attrs[:type] == [:friend, :colleague, :friend, :colleague]</code></pre><p>Edges without a specified attribute will have <code>missing</code> in the returned vector.</p><h3 id="Function-Signature-2"><a class="docs-heading-anchor" href="#Function-Signature-2">Function Signature</a><a class="docs-heading-anchor-permalink" href="#Function-Signature-2" title="Permalink"></a></h3><p>&lt;!– skip-check –&gt;</p><pre><code class="language-julia hljs">as_edgelist(net::Network;
+    attrs::Vector{Symbol} = Symbol[]  # Edge attributes to include
+) -&gt; Matrix{Int} or Tuple{Matrix{Int}, Dict{Symbol, Vector}}</code></pre><h2 id="Network-to-DataFrame"><a class="docs-heading-anchor" href="#Network-to-DataFrame">Network to DataFrame</a><a id="Network-to-DataFrame-1"></a><a class="docs-heading-anchor-permalink" href="#Network-to-DataFrame" title="Permalink"></a></h2><h3 id="Edge-DataFrame"><a class="docs-heading-anchor" href="#Edge-DataFrame">Edge DataFrame</a><a id="Edge-DataFrame-1"></a><a class="docs-heading-anchor-permalink" href="#Edge-DataFrame" title="Permalink"></a></h3><p>Convert the network&#39;s edges to a DataFrame:</p><pre><code class="language-julia hljs">using DataFrames
+
+net = network(4)
+add_edges!(net, [(1,2), (2,3), (3,4)])
+set_edge_attribute!(net, :weight, Dict((1,2)=&gt;1.0, (2,3)=&gt;2.5, (3,4)=&gt;0.8))
+
+edge_df = as_dataframe(net)
+# 3x3 DataFrame
+#  Row | source  target  weight
+# -----+------------------------
+#    1 |      1       2     1.0
+#    2 |      2       3     2.5
+#    3 |      3       4     0.8</code></pre><p>By default, all edge attributes are included. To select specific attributes:</p><pre><code class="language-julia hljs">edge_df = as_dataframe(net; attrs=[:weight])</code></pre><h3 id="Vertex-DataFrame"><a class="docs-heading-anchor" href="#Vertex-DataFrame">Vertex DataFrame</a><a id="Vertex-DataFrame-1"></a><a class="docs-heading-anchor-permalink" href="#Vertex-DataFrame" title="Permalink"></a></h3><p>Convert vertex attributes to a DataFrame:</p><pre><code class="language-julia hljs">set_vertex_attribute!(net, :name, Dict(1=&gt;&quot;A&quot;, 2=&gt;&quot;B&quot;, 3=&gt;&quot;C&quot;, 4=&gt;&quot;D&quot;))
+set_vertex_attribute!(net, :age, [25, 30, 28, 35])
+
+vertex_df = as_dataframe(net; vertices=true)
+# 4x3 DataFrame
+#  Row | vertex  name    age
+# -----+---------------------
+#    1 |      1  A        25
+#    2 |      2  B        30
+#    3 |      3  C        28
+#    4 |      4  D        35</code></pre><p>Vertices without a value for an attribute will have <code>missing</code> in the DataFrame.</p><h3 id="Function-Signature-3"><a class="docs-heading-anchor" href="#Function-Signature-3">Function Signature</a><a class="docs-heading-anchor-permalink" href="#Function-Signature-3" title="Permalink"></a></h3><p>&lt;!– skip-check –&gt;</p><pre><code class="language-julia hljs">as_dataframe(net::Network;
+    vertices::Bool = false,             # If true, return vertex DataFrame
+    attrs::Vector{Symbol} = Symbol[]    # Attributes to include (empty = all)
+) -&gt; DataFrame</code></pre><h2 id="Matrix-to-Network"><a class="docs-heading-anchor" href="#Matrix-to-Network">Matrix to Network</a><a id="Matrix-to-Network-1"></a><a class="docs-heading-anchor-permalink" href="#Matrix-to-Network" title="Permalink"></a></h2><h3 id="From-a-Binary-Matrix"><a class="docs-heading-anchor" href="#From-a-Binary-Matrix">From a Binary Matrix</a><a id="From-a-Binary-Matrix-1"></a><a class="docs-heading-anchor-permalink" href="#From-a-Binary-Matrix" title="Permalink"></a></h3><p>Create a network from a 0/1 adjacency matrix:</p><pre><code class="language-julia hljs">A = [0 1 1 0;
+     0 0 1 0;
+     0 0 0 1;
+     1 0 0 0]
+
+net = network_from_matrix(A)
+nv(net)  # 4
+ne(net)  # 5 (all the 1s in A)</code></pre><h3 id="From-a-Weighted-Matrix"><a class="docs-heading-anchor" href="#From-a-Weighted-Matrix">From a Weighted Matrix</a><a id="From-a-Weighted-Matrix-1"></a><a class="docs-heading-anchor-permalink" href="#From-a-Weighted-Matrix" title="Permalink"></a></h3><p>Non-binary matrices are automatically detected. Edge weights are stored as an attribute:</p><pre><code class="language-julia hljs">W = [0.0  1.5  0.0;
+     2.0  0.0  3.0;
+     0.0  0.0  0.0]
+
+net = network_from_matrix(W)
+nv(net)  # 3
+ne(net)  # 3
+
+# Weights are stored as the :weight attribute by default
+get_edge_attribute(net, :weight, 1, 2)  # 1.5
+get_edge_attribute(net, :weight, 2, 1)  # 2.0</code></pre><h3 id="Undirected-Networks-from-Matrices"><a class="docs-heading-anchor" href="#Undirected-Networks-from-Matrices">Undirected Networks from Matrices</a><a id="Undirected-Networks-from-Matrices-1"></a><a class="docs-heading-anchor-permalink" href="#Undirected-Networks-from-Matrices" title="Permalink"></a></h3><p>For undirected networks, only the upper triangle is used:</p><pre><code class="language-julia hljs">A = [0 1 0 1;
+     1 0 1 0;
+     0 1 0 1;
+     1 0 1 0]
+
+net = network_from_matrix(A; directed=false)
+ne(net)  # 4 (not 8)</code></pre><h3 id="Custom-Ignore-Values"><a class="docs-heading-anchor" href="#Custom-Ignore-Values">Custom Ignore Values</a><a id="Custom-Ignore-Values-1"></a><a class="docs-heading-anchor-permalink" href="#Custom-Ignore-Values" title="Permalink"></a></h3><p>By default, zeros are treated as &quot;no edge&quot;. Use <code>ignore_eval</code> to customize:</p><pre><code class="language-julia hljs"># Treat -1 as &quot;no edge&quot; instead of 0
+M = [-1  1  2;
+      3 -1  4;
+      5  6 -1]
+
+net = network_from_matrix(M; ignore_eval=(x -&gt; x == -1))
+ne(net)  # 6</code></pre><h3 id="Vertex-Names"><a class="docs-heading-anchor" href="#Vertex-Names">Vertex Names</a><a id="Vertex-Names-1"></a><a class="docs-heading-anchor-permalink" href="#Vertex-Names" title="Permalink"></a></h3><p>Optionally assign vertex names:</p><pre><code class="language-julia hljs">A = [0 1; 1 0]
+names = Dict(1 =&gt; &quot;Alice&quot;, 2 =&gt; &quot;Bob&quot;)
+
+net = network_from_matrix(A; names_eval=names)
+get_vertex_attribute(net, :vertex_names)
+# Dict(1 =&gt; &quot;Alice&quot;, 2 =&gt; &quot;Bob&quot;)</code></pre><h3 id="Custom-Weight-Attribute-Name"><a class="docs-heading-anchor" href="#Custom-Weight-Attribute-Name">Custom Weight Attribute Name</a><a id="Custom-Weight-Attribute-Name-1"></a><a class="docs-heading-anchor-permalink" href="#Custom-Weight-Attribute-Name" title="Permalink"></a></h3><pre><code class="language-julia hljs">net = network_from_matrix(W; attr=:strength)
+get_edge_attribute(net, :strength, 1, 2)  # 1.5</code></pre><h3 id="Function-Signature-4"><a class="docs-heading-anchor" href="#Function-Signature-4">Function Signature</a><a class="docs-heading-anchor-permalink" href="#Function-Signature-4" title="Permalink"></a></h3><p>&lt;!– skip-check –&gt;</p><pre><code class="language-julia hljs">network_from_matrix(A::AbstractMatrix;
+    directed::Bool = true,
+    loops::Bool = false,
+    ignore_eval = nothing,       # Function: value → Bool (true = ignore)
+    names_eval = nothing,        # Dict{Int,String} or Vector{String}
+    attr::Symbol = :weight       # Attribute name for non-binary values
+) -&gt; Network</code></pre><h2 id="Edge-List-to-Network"><a class="docs-heading-anchor" href="#Edge-List-to-Network">Edge List to Network</a><a id="Edge-List-to-Network-1"></a><a class="docs-heading-anchor-permalink" href="#Edge-List-to-Network" title="Permalink"></a></h2><h3 id="From-Tuples"><a class="docs-heading-anchor" href="#From-Tuples">From Tuples</a><a id="From-Tuples-1"></a><a class="docs-heading-anchor-permalink" href="#From-Tuples" title="Permalink"></a></h3><pre><code class="language-julia hljs">edges = [(1, 2), (2, 3), (3, 4), (4, 1)]
+net = network_from_edgelist(edges)
+nv(net)  # 4
+ne(net)  # 4</code></pre><h3 id="From-a-Matrix"><a class="docs-heading-anchor" href="#From-a-Matrix">From a Matrix</a><a id="From-a-Matrix-1"></a><a class="docs-heading-anchor-permalink" href="#From-a-Matrix" title="Permalink"></a></h3><pre><code class="language-julia hljs">el = [1 2; 2 3; 3 4; 4 1]
+net = network_from_edgelist(el)</code></pre><h3 id="Specifying-Number-of-Vertices"><a class="docs-heading-anchor" href="#Specifying-Number-of-Vertices">Specifying Number of Vertices</a><a id="Specifying-Number-of-Vertices-1"></a><a class="docs-heading-anchor-permalink" href="#Specifying-Number-of-Vertices" title="Permalink"></a></h3><p>By default, the number of vertices is auto-detected as the maximum vertex ID. To add isolated vertices:</p><pre><code class="language-julia hljs">edges = [(1, 2), (2, 3)]
+net = network_from_edgelist(edges; n=10)  # 10 vertices, not 3
+nv(net)  # 10
+ne(net)  # 2</code></pre><p>An edge list is never silently truncated: an endpoint outside <code>1:n</code> (an undersized <code>n=</code>, or a mistyped ID) and a self-loop under the default <code>loops=false</code> throw an <code>ArgumentError</code> naming the offending edge, as R&#39;s <code>network(el, matrix.type=&quot;edgelist&quot;)</code> errors on an illegal edgelist reference.</p><pre><code class="language-julia hljs">try
+    network_from_edgelist([(1, 2), (2, 5)]; n=3)
+catch e
+    println(e.msg)   # edge (2, 5) references a vertex outside 1:3; pass a larger n= ...
+end</code></pre><h3 id="Undirected-Edge-Lists"><a class="docs-heading-anchor" href="#Undirected-Edge-Lists">Undirected Edge Lists</a><a id="Undirected-Edge-Lists-1"></a><a class="docs-heading-anchor-permalink" href="#Undirected-Edge-Lists" title="Permalink"></a></h3><pre><code class="language-julia hljs">edges = [(1, 2), (2, 3), (3, 1)]
+net = network_from_edgelist(edges; directed=false)
+has_edge(net, 2, 1)  # true  -- symmetric</code></pre><h3 id="Function-Signature-5"><a class="docs-heading-anchor" href="#Function-Signature-5">Function Signature</a><a class="docs-heading-anchor-permalink" href="#Function-Signature-5" title="Permalink"></a></h3><p>&lt;!– skip-check –&gt;</p><pre><code class="language-julia hljs">network_from_edgelist(edges;
+    n::Union{Int,Nothing} = nothing,  # Number of vertices (auto-detect if nothing)
+    directed::Bool = true,
+    loops::Bool = false
+) -&gt; Network</code></pre><h2 id="DataFrame-to-Network"><a class="docs-heading-anchor" href="#DataFrame-to-Network">DataFrame to Network</a><a id="DataFrame-to-Network-1"></a><a class="docs-heading-anchor-permalink" href="#DataFrame-to-Network" title="Permalink"></a></h2><h3 id="Basic-Usage"><a class="docs-heading-anchor" href="#Basic-Usage">Basic Usage</a><a id="Basic-Usage-1"></a><a class="docs-heading-anchor-permalink" href="#Basic-Usage" title="Permalink"></a></h3><p>Create a network from a DataFrame with source and target columns:</p><pre><code class="language-julia hljs">using DataFrames
+
+df = DataFrame(
+    source = [1, 1, 2, 3],
+    target = [2, 3, 3, 4],
+    weight = [1.0, 2.0, 1.5, 3.0],
+    type = [&quot;friend&quot;, &quot;colleague&quot;, &quot;friend&quot;, &quot;mentor&quot;]
+)
+
+net = network_from_dataframe(df)
+nv(net)  # 4
+ne(net)  # 4
+
+# Additional columns are stored as edge attributes
+get_edge_attribute(net, :weight, 1, 2)  # 1.0
+get_edge_attribute(net, :type, 1, 3)    # &quot;colleague&quot;</code></pre><h3 id="Custom-Column-Names"><a class="docs-heading-anchor" href="#Custom-Column-Names">Custom Column Names</a><a id="Custom-Column-Names-1"></a><a class="docs-heading-anchor-permalink" href="#Custom-Column-Names" title="Permalink"></a></h3><pre><code class="language-julia hljs">df = DataFrame(
+    from = [1, 2, 3],
+    to = [2, 3, 1],
+    strength = [5.0, 3.0, 4.0]
+)
+
+net = network_from_dataframe(df; source=:from, target=:to)
+# :strength is automatically stored as an edge attribute</code></pre><h3 id="Undirected-from-DataFrame"><a class="docs-heading-anchor" href="#Undirected-from-DataFrame">Undirected from DataFrame</a><a id="Undirected-from-DataFrame-1"></a><a class="docs-heading-anchor-permalink" href="#Undirected-from-DataFrame" title="Permalink"></a></h3><pre><code class="language-julia hljs">df = DataFrame(source=[1,2,3], target=[2,3,1])
+net = network_from_dataframe(df; directed=false)</code></pre><h3 id="Function-Signature-6"><a class="docs-heading-anchor" href="#Function-Signature-6">Function Signature</a><a class="docs-heading-anchor-permalink" href="#Function-Signature-6" title="Permalink"></a></h3><p>&lt;!– skip-check –&gt;</p><pre><code class="language-julia hljs">network_from_dataframe(df::DataFrame;
+    source::Symbol = :source,    # Column name for source vertices
+    target::Symbol = :target,    # Column name for target vertices
+    directed::Bool = true,
+    loops::Bool = false
+) -&gt; Network</code></pre><h2 id="Round-Trip-Conversions"><a class="docs-heading-anchor" href="#Round-Trip-Conversions">Round-Trip Conversions</a><a id="Round-Trip-Conversions-1"></a><a class="docs-heading-anchor-permalink" href="#Round-Trip-Conversions" title="Permalink"></a></h2><h3 id="Network-Matrix-Network"><a class="docs-heading-anchor" href="#Network-Matrix-Network">Network → Matrix → Network</a><a id="Network-Matrix-Network-1"></a><a class="docs-heading-anchor-permalink" href="#Network-Matrix-Network" title="Permalink"></a></h3><pre><code class="language-julia hljs"># Start with a network
+net1 = network(4)
+add_edges!(net1, [(1,2), (2,3), (3,4)])
+set_edge_attribute!(net1, :weight,
+    Dict((1,2)=&gt;1.5, (2,3)=&gt;2.0, (3,4)=&gt;0.8))
+
+# Convert to weighted matrix
+W = as_matrix(net1; attr=:weight)
+
+# Convert back
+net2 = network_from_matrix(W)
+ne(net2)  # 3
+get_edge_attribute(net2, :weight, 1, 2)  # 1.5</code></pre><h3 id="Network-DataFrame-Network"><a class="docs-heading-anchor" href="#Network-DataFrame-Network">Network → DataFrame → Network</a><a id="Network-DataFrame-Network-1"></a><a class="docs-heading-anchor-permalink" href="#Network-DataFrame-Network" title="Permalink"></a></h3><pre><code class="language-julia hljs"># Start with a network
+net1 = network(3)
+add_edges!(net1, [(1,2), (2,3)])
+set_edge_attribute!(net1, :weight, Dict((1,2)=&gt;1.0, (2,3)=&gt;2.0))
+
+# Convert to DataFrame
+df = as_dataframe(net1)
+
+# Convert back
+net2 = network_from_dataframe(df)
+ne(net2)  # 2
+get_edge_attribute(net2, :weight, 2, 3)  # 2.0</code></pre><h3 id="Network-Edge-List-Network"><a class="docs-heading-anchor" href="#Network-Edge-List-Network">Network → Edge List → Network</a><a id="Network-Edge-List-Network-1"></a><a class="docs-heading-anchor-permalink" href="#Network-Edge-List-Network" title="Permalink"></a></h3><pre><code class="language-julia hljs">net1 = network(5)
+add_edges!(net1, [(1,2), (2,3), (3,4), (4,5)])
+
+el = as_edgelist(net1)
+net2 = network_from_edgelist(el; n=5)
+ne(net2)  # 4</code></pre><div class="admonition is-info" id="Attribute-Preservation-b1314191adf252a7"><header class="admonition-header">Attribute Preservation<a class="admonition-anchor" href="#Attribute-Preservation-b1314191adf252a7" title="Permalink"></a></header><div class="admonition-body"><p>Round-trip conversions through matrices preserve only the edge structure (and a single weight attribute). For full attribute preservation, use DataFrame conversions which preserve all edge attributes. Vertex and network attributes are not preserved in any round-trip conversion – save them separately if needed.</p></div></div><h2 id="Working-with-Graphs.jl"><a class="docs-heading-anchor" href="#Working-with-Graphs.jl">Working with Graphs.jl</a><a id="Working-with-Graphs.jl-1"></a><a class="docs-heading-anchor-permalink" href="#Working-with-Graphs.jl" title="Permalink"></a></h2><p>Since <code>Network</code> implements <code>AbstractGraph</code>, Graphs.jl functions that accept matrices work with Network&#39;s matrix output:</p><pre><code class="language-julia hljs">using Graphs
+using LinearAlgebra
+
+net = network(5; directed=false)
+add_edges!(net, [(1,2), (2,3), (3,4), (4,5), (1,5)])
+
+# Get adjacency matrix
+A = as_matrix(net)
+
+# Compute eigenvalues (spectrum)
+eigenvalues = eigvals(Symmetric(A))
+
+# Compute Laplacian
+D = Diagonal(vec(sum(A, dims=2)))
+L = D - A</code></pre><h2 id="Sparse-Matrix-Integration"><a class="docs-heading-anchor" href="#Sparse-Matrix-Integration">Sparse Matrix Integration</a><a id="Sparse-Matrix-Integration-1"></a><a class="docs-heading-anchor-permalink" href="#Sparse-Matrix-Integration" title="Permalink"></a></h2><p>For integration with sparse linear algebra:</p><pre><code class="language-julia hljs">using SparseArrays
+
+net = network(1000)
+# ... add edges ...
+
+# Get sparse adjacency matrix
+S = as_matrix(net; sparse=true)
+
+# Use with sparse linear algebra, e.g. Arpack.jl (add it to your project):
+# using Arpack
+# eigenvalues, eigenvectors = eigs(S; nev=5, which=:LM)</code></pre><h2 id="Best-Practices"><a class="docs-heading-anchor" href="#Best-Practices">Best Practices</a><a id="Best-Practices-1"></a><a class="docs-heading-anchor-permalink" href="#Best-Practices" title="Permalink"></a></h2><ol><li><p><strong>Use sparse matrices for large networks</strong>: Dense <code>n x n</code> matrices consume <code>O(n^2)</code> memory. Sparse matrices store only non-zero entries.</p></li><li><p><strong>Choose the right format</strong>: Use matrices for linear algebra, DataFrames for data manipulation, edge lists for simple enumeration.</p></li><li><p><strong>Be aware of attribute loss</strong>: Matrix conversion only preserves one edge attribute (as weights). Use DataFrame conversion to preserve all edge attributes.</p></li><li><p><strong>Check directedness</strong>: Matrix conversion for undirected networks produces symmetric matrices. Ensure the <code>directed</code> flag is set correctly when converting back.</p></li><li><p><strong>Handle isolated vertices</strong>: When converting from edge lists, specify <code>n</code> explicitly if the network has isolated vertices (no edges), otherwise they will be dropped.</p></li></ol></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../missing_data/">« Missing Data</a><a class="docs-footer-nextpage" href="../conversion_invariants/">Conversion Invariants »</a><div class="flexbox-break"></div><p class="footer-message"><a href="/">Ecosystem home</a> · <a href="/packages/">Packages</a> · <a href="/getting-started/">Get started</a> · <a href="/capabilities/">Capabilities</a> — Built with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.19.0 on <span class="colophon-date" title="Thursday 8 October 2026 06:58">Thursday 8 October 2026</span>. Using Julia version 1.13.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
